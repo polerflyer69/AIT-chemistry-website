@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<section class="section" style="padding-top: 120px;">
+    <div class="container">
+        <h2 style="color: white; margin-bottom: 2rem;">Admin Dashboard</h2>
+
+        <!-- Manage Notes Section -->
+        <div class="glass-panel" style="padding: 2rem; margin-bottom: 3rem;">
+            <h3 style="margin-bottom: 2rem; color: #1e3a8a;">Manage Notes</h3>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;">
+
+                <!-- Upload Form -->
+                <div>
+                    <h4 style="margin-bottom: 1rem; color: #334155;">Upload New Note</h4>
+                    <form action="{{ url_for('upload_note') }}" method="POST" enctype="multipart/form-data">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Chapter / Title</label>
+                        <input type="text" name="title" required placeholder="e.g. Thermodynamics"
+                            style="background: white; border: 1px solid #cbd5e1;">
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Class</label>
+                                <select name="class_category" style="background: white; border: 1px solid #cbd5e1;">
+                                    <option value="Class 9">Class 9</option>
+                                    <option value="Class 10">Class 10</option>
+                                    <option value="Class 11">Class 11</option>
+                                    <option value="Class 12">Class 12</option>
+                                    <option value="JEE">JEE</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Board</label>
+                                <select name="board" style="background: white; border: 1px solid #cbd5e1;">
+                                    <option value="CBSE">CBSE</option>
+                                    <option value="ICSE">ICSE</option>
+                                    <option value="State">State</option>
+                                    <option value="International">International</option>
+                                    <option value="Cambridge">Cambridge</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">PDF File</label>
+                        <input type="file" name="file" accept=".pdf" required
+                            style="background: white; border: 1px solid #cbd5e1; padding: 0.8rem;">
+
+                        <button type="submit" class="nav-btn" style="width: 100%; margin-top: 1rem;">Upload
+                            Note</button>
+                    </form>
+                </div>
+
+                <!-- Existing Notes List -->
+                <div>
+                    <h4 style="margin-bottom: 1rem; color: #334155;">Existing Notes</h4>
+                    <div
+                        style="max-height: 400px; overflow-y: auto; background: white; border-radius: 12px; border: 1px solid #e2e8f0;">
+                        {% if notes %}
+                        <ul style="list-style: none;">
+                            {% for note in notes %}
+                            <li
+                                style="padding: 1rem; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div style="font-weight: 600; color: #1e3a8a;">{{ note['title'] }}</div>
+                                    <div style="font-size: 0.85rem; color: #64748b;">
+                                        {{ note['class_category'] }} • {{ note['board'] }}
+                                    </div>
+                                </div>
+                                <form action="{{ url_for('delete_note', note_id=note['id']) }}" method="POST"
+                                    style="margin:0;">
+                                    <button type="submit"
+                                        style="background: none; border: none; color: #ef4444; font-weight: 600; cursor: pointer; font-size: 0.9rem;">Delete</button>
+                                </form>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <p style="padding: 2rem; text-align: center; color: #94a3b8;">No notes uploaded yet.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="glass-panel" style="padding: 2rem;">
+            <h3>Recent Enquiries</h3>
+            <div style="overflow-x: auto;">
+                <table
+                    style="width: 100%; border-collapse: collapse; margin-top: 1rem; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                    <thead style="background: #eff6ff;">
+                        <tr style="border-bottom: 2px solid #e2e8f0;">
+                            <th style="padding: 1rem; text-align: left; color: #1e3a8a;">Date</th>
+                            <th style="padding: 1rem; text-align: left; color: #1e3a8a;">Name</th>
+                            <th style="padding: 1rem; text-align: left; color: #1e3a8a;">Phone</th>
+                            <th style="padding: 1rem; text-align: left; color: #1e3a8a;">Class</th>
+                            <th style="padding: 1rem; text-align: left; color: #1e3a8a;">Message</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if enquiries %}
+                        {% for enq in enquiries %}
+                        <tr style="border-bottom: 1px solid #e2e8f0;">
+                            <td style="padding: 1rem; color: #475569;">{{ enq['created_at'] }}</td>
+                            <td style="padding: 1rem; font-weight: 500; color: #0f172a;">{{ enq['student_name'] }}</td>
+                            <td style="padding: 1rem; color: #2563eb;"><a href="tel:{{ enq['phone'] }}"
+                                    style="text-decoration: none; color: inherit;">{{ enq['phone'] }}</a></td>
+                            <td style="padding: 1rem;"><span
+                                    style="background: #dbeafe; color: #1e40af; padding: 2px 8px; border-radius: 12px; font-size: 0.85rem;">{{
+                                    enq['class_type'] }}</span></td>
+                            <td style="padding: 1rem; color: #475569;">{{ enq['message'] }}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="5" style="padding: 2rem; text-align: center; color: #64748b;">No enquiries yet.
+                            </td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            <div style="margin-top: 2rem; text-align: right;">
+                <a href="{{ url_for('logout') }}"
+                    style="color: #ef4444; text-decoration: none; font-weight: 600;">Logout</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

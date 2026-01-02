@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AIT Chemistry Classes{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body style="padding-top: 100px;"> <!-- Global padding to prevent navbar overlap -->
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="nav-logo">AIT Chemistry</a>
+
+            <button class="nav-toggle" aria-label="Toggle Navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-links">
+                <!-- The sliding liquid highlight (Desktop Only) -->
+                <div class="nav-highlight"></div>
+
+                <li><a href="{{ url_for('home') }}" class="nav-item" data-target="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('about') }}" class="nav-item" data-target="{{ url_for('about') }}">About Sir</a>
+                </li>
+                <li><a href="{{ url_for('courses') }}" class="nav-item"
+                        data-target="{{ url_for('courses') }}">Courses</a></li>
+                <li><a href="{{ url_for('notes') }}" class="nav-item" data-target="{{ url_for('notes') }}">Notes</a>
+                </li>
+                <li><a href="{{ url_for('contact') }}" class="nav-item"
+                        data-target="{{ url_for('contact') }}">Contact</a></li>
+
+                <!-- Mobile CTA (Visible only inside menu on mobile) -->
+                <li class="mobile-only" style="margin-top: 1rem;">
+                    <a href="tel:+919106779239"
+                        style="background: #2563eb; color: white; border-radius: 8px; justify-content: center; display: flex;">Call
+                        Now</a>
+                </li>
+            </ul>
+
+            <div class="nav-cta desktop-only">
+                <a href="tel:+919106779239" class="nav-btn">Call Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="container">
+            {% for message in messages %}
+            <div class="glass-panel"
+                style="padding: 1rem; background: rgba(220, 252, 231, 0.9); color: #14532d; text-align: center; border: 1px solid #86efac; margin-bottom: 2rem;">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p><strong>AIT Chemistry Classes by Ashwin Sir</strong></p>
+        <p style="margin-top: 0.5rem;">307, Gangotri Icon, Vasna – Bhayli Main Rd, Vadodara, Gujarat</p>
+        <p style="margin-top: 1rem; opacity: 0.7;">&copy; 2026 AIT Chemistry Classes. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const highlight = document.querySelector('.nav-highlight');
+            const links = document.querySelectorAll('.nav-item');
+            const currentPath = window.location.pathname;
+
+            function updateHighlight(link) {
+                // STRICT MODE: No highlight on mobile
+                if (window.innerWidth <= 768) return;
+
+                if (!link) return;
+
+                const highlight = document.querySelector('.nav-highlight');
+                if (!highlight) return;
+
+                // Get position relative to the UL parent
+                const parentRect = link.parentElement.parentElement.getBoundingClientRect();
+                const linkRect = link.getBoundingClientRect();
+                const relativeLeft = linkRect.left - parentRect.left;
+
+                // Update highlight styles
+                highlight.style.width = `${linkRect.width}px`;
+                highlight.style.transform = `translateX(${relativeLeft}px)`;
+
+                // Update active text class
+                links.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            }
+
+            // 1. Initial Position on Load (Desktop Only)
+            if (window.innerWidth > 768) {
+                let activeLink = null;
+                links.forEach(link => {
+                    if (link.getAttribute('href') === currentPath) {
+                        activeLink = link;
+                    }
+                });
+
+                if (!activeLink && (currentPath === '/' || currentPath === '')) {
+                    activeLink = links[0];
+                }
+
+                if (activeLink) {
+                    setTimeout(() => updateHighlight(activeLink), 50);
+                }
+            } else {
+                // On mobile, just set the active class without moving the pill
+                links.forEach(link => {
+                    if (link.getAttribute('href') === currentPath) link.classList.add('active');
+                });
+                if (!document.querySelector('.nav-item.active') && (currentPath === '/' || currentPath === '')) {
+                    links[0].classList.add('active');
+                }
+            }
+
+            // 2. Click Interaction
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    // Always set active class logic
+                    if (window.innerWidth > 768) {
+                        updateHighlight(e.target);
+                    } else {
+                        // Mobile: Simple toggle
+                        links.forEach(l => l.classList.remove('active'));
+                        e.target.classList.add('active');
+                    }
+                });
+            });
+
+            // 3. Resize Adjustment
+            window.addEventListener('resize', () => {
+                const currentActive = document.querySelector('.nav-item.active');
+                if (currentActive && window.innerWidth > 768) {
+                    updateHighlight(currentActive);
+                }
+            });
+
+            // 4. Mobile Slide-in Drawer Logic
+            const navToggle = document.querySelector('.nav-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            const navOverlay = document.querySelector('.nav-overlay');
+            const navClose = document.querySelector('.nav-close');
+
+            function toggleMenu() {
+                navLinks.classList.toggle('active');
+                navOverlay.classList.toggle('active');
+                // Prevent scrolling when menu is open
+                document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+            }
+
+            function closeMenu() {
+                navLinks.classList.remove('active');
+                navOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            if (navToggle) {
+                navToggle.addEventListener('click', toggleMenu);
+            }
+
+            if (navClose) {
+                navClose.addEventListener('click', closeMenu);
+            }
+
+            if (navOverlay) {
+                navOverlay.addEventListener('click', closeMenu);
+            }
+
+            // Close menu when a link is clicked
+            const mobileLinks = document.querySelectorAll('.nav-links a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 768) {
+                        closeMenu();
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+
+</html>

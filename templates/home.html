@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- 1. Hero Section: Clean, Focused -->
+<section class="hero"
+    style="min-height: 85vh; padding-top: 50px; display: flex; flex-direction: column; justify-content: center; position: relative;">
+    <div class="container" style="text-align: center; max-width: 900px;">
+        <h1
+            style="font-size: 3.5rem; color: #1e3a8a; margin-bottom: 1.5rem; font-weight: 800; letter-spacing: -1px; line-height: 1.1;">
+            Chemistry Made Clear.
+        </h1>
+
+        <!-- Desktop Support Text -->
+        <div class="desktop-only">
+            <p style="font-size: 1.4rem; color: #334155; margin-bottom: 1rem; font-weight: 600; line-height: 1.5;">
+                Expert Chemistry Coaching for Class 9 to 12 (All Boards) & JEE
+            </p>
+            <p style="font-size: 1.1rem; color: #475569; margin-bottom: 3rem; font-weight: 500;">
+                Including CBSE, ICSE, State Board, International & Cambridge Curriculum.<br>
+                Led by <strong>Ashwin Sir</strong> with a strong focus on concept clarity.
+            </p>
+        </div>
+
+        <!-- Mobile Support Text (Simplified) -->
+        <div class="mobile-only" style="margin-bottom: 2rem;">
+            <p style="font-size: 1.2rem; color: #334155; margin-bottom: 0.5rem; font-weight: 700;">
+                Class 9–12 (All Boards) & JEE
+            </p>
+            <p style="font-size: 1rem; color: #64748b; font-weight: 500;">
+                CBSE • ICSE • State • Cambridge
+            </p>
+        </div>
+
+        <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
+            <a href="#enquire-section" class="nav-btn"
+                style="padding: 1rem 3rem; font-size: 1.1rem; box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);">
+                Enquire Now
+            </a>
+            <a href="{{ url_for('courses') }}" class="glass-btn-outline"
+                style="padding: 1rem 3rem; font-size: 1.1rem; border-radius: 50px; border: 2px solid #1e3a8a; color: #1e3a8a; font-weight: 600; text-decoration: none; transition: all 0.3s;">
+                View Courses
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- 2. Features: Clean Grid -->
+<section class="section" style="padding-top: 0;">
+    <div class="container">
+        <div class="grid-3" style="grid-template-columns: repeat(2, 1fr); max-width: 800px; margin: 0 auto;">
+            <div class="glass-card" style="text-align: center; padding: 2.5rem 2rem;">
+                <div style="font-size: 2.5rem; margin-bottom: 1rem;">👨‍🏫</div>
+                <h3 style="color: #1e3a8a; margin-bottom: 0.5rem;">Ashwin Sir</h3>
+                <p style="color: #475569;">12+ Years Experience</p>
+            </div>
+            <div class="glass-card" style="text-align: center; padding: 2.5rem 2rem;">
+                <div style="font-size: 2.5rem; margin-bottom: 1rem;">👥</div>
+                <h3 style="color: #1e3a8a; margin-bottom: 0.5rem;">Small Batches</h3>
+                <p style="color: #475569;">Individual Attention</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 3. Testimonials: Isolated -->
+<section class="section" style="background: rgba(255,255,255,0.4);">
+    <div class="container">
+        <h2 class="section-title" style="margin-bottom: 3rem; color: #1e3a8a;">Student Feedback</h2>
+        <div class="grid-3">
+            {% for testimonial in testimonials %}
+            <div class="glass-card" style="background: rgba(255, 255, 255, 0.85);">
+                <div style="color: #f59e0b; margin-bottom: 0.5rem;">★★★★★</div>
+                <p style="font-style: italic; color: #334155; margin-bottom: 1.5rem;">"{{ testimonial.content }}"</p>
+                <div>
+                    <strong style="color: #1e3a8a; display: block;">{{ testimonial.student_name }}</strong>
+                    <span style="color: #64748b; font-size: 0.9rem;">{{ testimonial.class_info }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- 4. Enquiry Form: Final Strict Layout -->
+<section id="enquire-section" class="section">
+    <div class="container" style="max-width: 700px;">
+        <div class="glass-panel"
+            style="padding: 3rem; background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(255,255,255,0.8); box-shadow: 0 20px 40px rgba(0,0,0,0.08);">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h2 style="color: #1e3a8a; margin-bottom: 0.5rem;">Enquire for Chemistry Classes</h2>
+                <p style="color: #475569;">Fill out the form below for details about Batches and Fees.</p>
+            </div>
+
+            <form action="{{ url_for('submit_enquiry') }}" method="POST">
+
+                <div style="margin-bottom: 1.2rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; color: #1e3a8a; font-weight: 600;">Student
+                        Name</label>
+                    <input type="text" name="name" required
+                        style="background: white; border: 1px solid #cbd5e1; padding: 0.8rem;">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.2rem;">
+                    <div>
+                        <label
+                            style="display: block; margin-bottom: 0.5rem; color: #1e3a8a; font-weight: 600;">Class</label>
+                        <select name="class_type"
+                            style="background: white; border: 1px solid #cbd5e1; padding: 0.8rem;">
+                            <option>Class 9</option>
+                            <option>Class 10</option>
+                            <option>Class 11</option>
+                            <option>Class 12</option>
+                            <option>JEE</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label
+                            style="display: block; margin-bottom: 0.5rem; color: #1e3a8a; font-weight: 600;">Phone</label>
+                        <input type="tel" name="phone" required
+                            style="background: white; border: 1px solid #cbd5e1; padding: 0.8rem;">
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <label
+                        style="display: block; margin-bottom: 0.5rem; color: #1e3a8a; font-weight: 600;">Message</label>
+                    <textarea name="message" rows="3"
+                        style="background: white; border: 1px solid #cbd5e1; padding: 0.8rem;"></textarea>
+                </div>
+
+                <button type="submit" class="nav-btn"
+                    style="width: 100%; padding: 1rem; font-size: 1.1rem; margin: 0;">Submit Enquiry</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}Contact - AIT Chemistry Classes{% endblock %}
+{% block content %}
+<section class="section" style="padding-top: 100px;">
+    <div class="container">
+        <h2 class="section-title" style="color: #1e3a8a; margin-bottom: 3rem;">Get in Touch</h2>
+        <div class="grid-3" style="grid-template-columns: 1fr 1.2fr; align-items: start; gap: 3rem;">
+
+            <!-- 1. Contact Info (Informational - High Contrast Text) -->
+            <div class="glass-card" style="background: rgba(255,255,255,0.85); border: 2px solid white;">
+                <h3 style="margin-bottom: 1.5rem; color: #1e3a8a; font-weight: 800;">Classroom Location</h3>
+
+                <address
+                    style="font-style: normal; line-height: 1.6; font-size: 1.1rem; color: #0f172a; font-weight: 500;">
+                    307, Gangotri Icon, Vasna – Bhayli Main Rd,<br>
+                    near Nilamber Triumph, Saiyed Vasna,<br>
+                    Vadodara, Gujarat – 390007
+                </address>
+
+                <hr style="border: 0; border-top: 1px solid #cbd5e1; margin: 2rem 0;">
+
+                <h3 style="margin-bottom: 1rem; color: #1e3a8a; font-weight: 800;">Direct Contact</h3>
+                <p style="font-size: 1.15rem; color: #0f172a;">
+                    <strong>Ashwin Sir</strong><br>
+                    <a href="tel:+919106779239"
+                        style="color: #2563eb; text-decoration: none; font-weight: 700; font-size: 1.2rem; display: block; margin-top: 0.5rem;">091067
+                        79239</a>
+                </p>
+                <p style="margin-top: 1rem; font-size: 0.95rem; color: #334155; font-weight: 500;">
+                    Call us for Batch Timings and Fees.
+                </p>
+            </div>
+
+            <!-- 2. Enquiry Form (Action - Dark Mode / High Contrast) -->
+            <div
+                style="background: linear-gradient(145deg, #1e3a8a, #1e40af); padding: 3rem; border-radius: 24px; color: white; box-shadow: 0 20px 50px rgba(30, 58, 138, 0.3);">
+                <h2 style="margin-bottom: 2rem; color: white; font-weight: 800;">Quick Enquiry</h2>
+                <form action="{{ url_for('submit_enquiry') }}" method="POST">
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; color: #bfdbfe;">Student
+                            Name</label>
+                        <input type="text" name="name" required placeholder="Enter student's full name"
+                            style="background: white; border: 2px solid transparent; color: #0f172a; font-weight: 500; border-radius: 8px;">
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label
+                            style="font-weight: 600; display: block; margin-bottom: 0.5rem; color: #bfdbfe;">Class</label>
+                        <select name="class_type"
+                            style="background: white; border: 2px solid transparent; color: #0f172a; font-weight: 500; border-radius: 8px;">
+                            <option value="Class 9">Class 9</option>
+                            <option value="Class 10">Class 10</option>
+                            <option value="Class 11 Chemistry">Class 11 Chemistry</option>
+                            <option value="Class 12 Chemistry">Class 12 Chemistry</option>
+                            <option value="JEE Chemistry">JEE Chemistry</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; color: #bfdbfe;">Phone
+                            Number</label>
+                        <input type="tel" name="phone" required placeholder="Your contact number"
+                            style="background: white; border: 2px solid transparent; color: #0f172a; font-weight: 500; border-radius: 8px;">
+                    </div>
+
+                    <div style="margin-bottom: 2rem;">
+                        <label style="font-weight: 600; display: block; margin-bottom: 0.5rem; color: #bfdbfe;">Message
+                            / Doubts</label>
+                        <textarea name="message" rows="3" placeholder="Any specific requirements?"
+                            style="background: white; border: 2px solid transparent; color: #0f172a; font-weight: 500; border-radius: 8px;"></textarea>
+                    </div>
+
+                    <button type="submit"
+                        style="width: 100%; border: none; font-size: 1.1rem; padding: 1rem; border-radius: 50px; background: #60a5fa; color: #1e3a8a; font-weight: 800; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                        Send Enquiry
+                    </button>
+                </form>
+            </div>
+
+        </div>
+
+        <!-- Map -->
+        <div class="glass-panel"
+            style="margin-top: 4rem; padding: 0.5rem; height: 450px; overflow: hidden; background: white; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            <iframe
+                src="https://maps.google.com/maps?q=307,+Gangotri+Icon,+Vasna-Bhayli+Main+Rd,+Vadodara,+Gujarat+390007+(AIT+Chemistry+Classes)&t=&z=16&ie=UTF8&iwloc=B&output=embed"
+                width="100%" height="100%" style="border:0; border-radius: 16px;" allowfullscreen=""
+                loading="lazy"></iframe>
+        </div>
+    </div>
+</section>
+{% endblock %}

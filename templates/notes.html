@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Chemistry Notes - AIT{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h2 class="section-title" style="color: #1e3a8a;">Chemistry Notes & Material</h2>
+
+        <div class="glass-panel" style="padding: 2rem; background: rgba(255,255,255,0.8); margin-bottom: 2rem;">
+            <p style="text-align: center; color: #334155;">
+                Access chapter-wise notes, summaries, and board-focused question banks.
+            </p>
+        </div>
+
+        <div class="grid-3">
+            {% for category in ['Class 9', 'Class 10', 'Class 11', 'Class 12', 'JEE'] %}
+            <div class="glass-card" style="background: #ffffff; border: 1px solid #e2e8f0;">
+                <h3
+                    style="color: #1e3a8a; border-bottom: 2px solid #eff6ff; padding-bottom: 0.5rem; margin-bottom: 1rem;">
+                    {{ category }}</h3>
+
+                {% if notes.get(category) %}
+                <ul style="list-style: none;">
+                    {% for note in notes[category] %}
+                    <li style="margin-bottom: 0.8rem; padding-bottom: 0.8rem; border-bottom: 1px dashed #e2e8f0;">
+                        <a href="{{ url_for('static', filename='uploads/notes/' + note['file_path']) }}" download
+                            target="_blank"
+                            style="text-decoration: none; color: #2563eb; font-weight: 500; display: block;">
+                            📄 {{ note['title'] }}
+                        </a>
+                        <span style="font-size: 0.8rem; color: #64748b;">{{ note['board'] }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p style="color: #94a3b8; font-size: 0.9rem; font-style: italic;">No specific notes uploaded yet.</p>
+                {% endif %}
+
+                <div style="margin-top: 1rem; text-align: right;">
+                    <a href="#" style="font-size: 0.9rem; color: #3b82f6; text-decoration: none;">View All &rarr;</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+{% endblock %}

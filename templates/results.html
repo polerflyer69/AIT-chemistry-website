@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Student Results{% endblock %}
+{% block content %}
+<section class="section" style="padding-top: 120px;">
+    <div class="container" style="max-width: 800px;">
+
+        <div class="glass-panel" style="padding: 2rem; text-align: center; margin-bottom: 2rem;">
+            <h2>Check Your Result</h2>
+            <form method="POST" style="margin-top: 2rem;">
+                <input type="text" name="identifier" placeholder="Enter Roll Number or Registered Phone" required
+                    style="max-width: 400px;">
+                <br>
+                <button type="submit" class="nav-btn">View Results</button>
+            </form>
+            {% if error %}
+            <p
+                style="color: red; margin-top: 1rem; background: rgba(255,255,255,0.8); padding: 5px; border-radius: 5px;">
+                {{ error }}</p>
+            {% endif %}
+        </div>
+
+        {% if student %}
+        <div class="glass-card">
+            <h3>Student: {{ student['full_name'] }} <span style="font-size: 0.8em; opacity: 0.7;">({{
+                    student['class_batch'] }})</span></h3>
+
+            {% if results %}
+            <table
+                style="width: 100%; border-collapse: collapse; margin-top: 1rem; background: rgba(255,255,255,0.5); border-radius: 8px; overflow: hidden;">
+                <thead style="background: rgba(0,0,0,0.1);">
+                    <tr>
+                        <th style="padding: 1rem; text-align: left;">Test Name</th>
+                        <th style="padding: 1rem;">Date</th>
+                        <th style="padding: 1rem;">Marks</th>
+                        <th style="padding: 1rem;">Percentage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for res in results %}
+                    <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
+                        <td style="padding: 1rem;">{{ res['test_name'] }}</td>
+                        <td style="padding: 1rem; text-align: center;">{{ res['test_date'] }}</td>
+                        <td style="padding: 1rem; text-align: center;"><b>{{ res['marks_obtained'] }}</b> / {{
+                            res['total_marks'] }}</td>
+                        <td style="padding: 1rem; text-align: center;">
+                            {{ (res['marks_obtained'] / res['total_marks'] * 100) | round(1) }}%
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p>No results found for this student yet.</p>
+            {% endif %}
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+{% endblock %}

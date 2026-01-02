@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Admin Login{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="container" style="max-width: 500px;">
+        <div class="glass-panel" style="padding: 3rem; text-align: center;">
+            <h2 style="color: #1e3a8a; margin-bottom: 2rem;">Sir Panel Login</h2>
+
+            <form method="POST">
+                <div style="margin-bottom: 1.5rem; text-align: left;">
+                    <label
+                        style="color: #475569; font-weight: 600; margin-bottom: 0.5rem; display: block;">Username</label>
+                    <input type="text" name="username" required style="background: white; border: 1px solid #cbd5e1;">
+                </div>
+
+                <div style="margin-bottom: 2rem; text-align: left;">
+                    <label
+                        style="color: #475569; font-weight: 600; margin-bottom: 0.5rem; display: block;">Password</label>
+                    <input type="password" name="password" required
+                        style="background: white; border: 1px solid #cbd5e1;">
+                </div>
+
+                <button type="submit" class="nav-btn" style="width: 100%;">Login to Dashboard</button>
+            </form>
+
+            {% if error %}
+            <p style="color: #ef4444; margin-top: 1rem;">{{ error }}</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
