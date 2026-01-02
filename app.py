@@ -6,6 +6,14 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'dev-key-change-this-in-prod'
 DATABASE = 'database.db'
 
+# Auto-initialize DB if missing (Fix for Render Deployment)
+if not os.path.exists(DATABASE):
+    from init_db import init_db
+    print("Database not found. Initializing...", flush=True)
+    init_db()
+else:
+    print("Database found. Skipping initialization.", flush=True)
+
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:

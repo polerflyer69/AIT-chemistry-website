@@ -13,7 +13,11 @@ def init_db():
         os.remove(DATABASE)
         
     conn = get_db_connection()
-    with open('schema.sql') as f:
+    
+    # Use absolute path to find schema.sql regardless of CWD
+    schema_path = os.path.join(os.path.dirname(__file__), 'schema.sql')
+    
+    with open(schema_path) as f:
         conn.executescript(f.read())
     
     # Create default admin
