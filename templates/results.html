@@ -4,13 +4,13 @@
 <section class="section" style="padding-top: 120px;">
     <div class="container" style="max-width: 800px;">
 
-        <div class="glass-panel" style="padding: 2rem; text-align: center; margin-bottom: 2rem;">
-            <h2>Check Your Result</h2>
-            <form method="POST" style="margin-top: 2rem;">
-                <input type="text" name="identifier" placeholder="Enter Roll Number or Registered Phone" required
-                    style="max-width: 400px;">
+        <div class="glass-panel" style="padding: 2rem; text-align: center; margin-bottom: 3rem;">
+            <h2 style="color: #1e3a8a; margin-bottom: 1.5rem;">Check Your Result</h2>
+            <form method="POST" style="margin-top: 1rem;">
+                <input type="text" name="identifier" placeholder="Enter Student Name, Roll No, or Phone" required
+                    style="width: 100%; max-width: 400px; box-sizing: border-box;">
                 <br>
-                <button type="submit" class="nav-btn">View Results</button>
+                <button type="submit" class="nav-btn" style="margin-top: 1.5rem;">View Results</button>
             </form>
             {% if error %}
             <p
@@ -37,7 +37,7 @@
                 </thead>
                 <tbody>
                     {% for res in results %}
-                    <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
+                    <tr style="border-bottom: 1px solid rgba(0,0,0,0.05); color: #0f172a;">
                         <td style="padding: 1rem;">{{ res['test_name'] }}</td>
                         <td style="padding: 1rem; text-align: center;">{{ res['test_date'] }}</td>
                         <td style="padding: 1rem; text-align: center;"><b>{{ res['marks_obtained'] }}</b> / {{

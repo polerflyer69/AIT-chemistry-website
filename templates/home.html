@@ -79,6 +79,77 @@
             {% endfor %}
         </div>
     </div>
+
+    <!-- Write a Review Button & Form -->
+    <div style="text-align: center; margin-top: 3rem;">
+        <button id="toggleReviewForm" class="nav-btn"
+            style="background: white; color: #1e3a8a; border: 2px solid #1e3a8a;">
+            Write a Review
+        </button>
+    </div>
+
+    <div id="reviewFormContainer" class="glass-panel"
+        style="max-width: 600px; margin: 2rem auto 0; padding: 3rem; display: none; text-align: left; background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(255,255,255,1); box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
+        <h3 style="color: #1e3a8a; margin-bottom: 0.5rem; text-align: center; font-size: 1.8rem;">Share Your Experience
+        </h3>
+        <p style="text-align: center; color: #64748b; margin-bottom: 2rem; font-size: 1rem;">Help others choose the
+            right path.</p>
+
+        <form action="{{ url_for('submit_review') }}" method="POST">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Your Name</label>
+            <input type="text" name="student_name" required placeholder="Ex. Rohan Sharma"
+                style="width: 100%; margin-bottom: 1rem; padding: 0.9rem; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 1rem; background: #f8fafc;">
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div>
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Role /
+                        Class</label>
+                    <select name="class_info"
+                        style="width: 100%; padding: 0.9rem; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 1rem; background: #f8fafc;">
+                        <option value="Student">Student</option>
+                        <option value="Parent">Parent</option>
+                        <option value="Class 11">Class 11</option>
+                        <option value="Class 12">Class 12</option>
+                        <option value="JEE Aspirant">JEE Aspirant</option>
+                    </select>
+                </div>
+                <div>
+                    <label
+                        style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Rating</label>
+                    <select name="rating"
+                        style="width: 100%; padding: 0.9rem; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 1rem; background: #f8fafc;">
+                        <option value="5">★★★★★ (Excellent)</option>
+                        <option value="4">★★★★☆ (Good)</option>
+                        <option value="3">★★★☆☆ (Average)</option>
+                        <option value="2">★★☆☆☆ (Fair)</option>
+                        <option value="1">★☆☆☆☆ (Poor)</option>
+                    </select>
+                </div>
+            </div>
+
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #334155;">Your Review</label>
+            <textarea name="content" required rows="4" placeholder="Share your honest feedback..."
+                style="width: 100%; margin-bottom: 1.5rem; padding: 0.9rem; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 1rem; background: #f8fafc; font-family: inherit;"></textarea>
+
+            <button type="submit" class="nav-btn"
+                style="width: 100%; padding: 1rem; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);">Submit
+                Review</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('toggleReviewForm').addEventListener('click', function () {
+            var form = document.getElementById('reviewFormContainer');
+            if (form.style.display === 'none') {
+                form.style.display = 'block';
+                this.textContent = 'Close Review Form';
+            } else {
+                form.style.display = 'none';
+                this.textContent = 'Write a Review';
+            }
+        });
+    </script>
+    </div>
 </section>
 
 <!-- 4. Enquiry Form: Final Strict Layout -->

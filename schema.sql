@@ -53,6 +53,7 @@ CREATE TABLE testimonials (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     student_name TEXT NOT NULL,
     content TEXT NOT NULL,
-    class_info TEXT, -- e.g. "Class 12 - 2025"
-    is_featured BOOLEAN DEFAULT 0
+    class_info TEXT NOT NULL,
+    rating INTEGER DEFAULT 5,
+    is_featured INTEGER DEFAULT 0
 );

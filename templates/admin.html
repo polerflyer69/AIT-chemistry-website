@@ -3,26 +3,35 @@
 {% block content %}
 <section class="section" style="padding-top: 120px;">
     <div class="container">
-        <h2 style="color: white; margin-bottom: 2rem;">Admin Dashboard</h2>
+        <h2 style="color: white; margin-bottom: 2rem; text-shadow: 0 4px 12px rgba(0,0,0,0.1);">Admin Dashboard</h2>
 
         <!-- Manage Notes Section -->
-        <div class="glass-panel" style="padding: 2rem; margin-bottom: 3rem;">
-            <h3 style="margin-bottom: 2rem; color: #1e3a8a;">Manage Notes</h3>
+        <div class="glass-panel"
+            style="padding: 2.5rem; margin-bottom: 3rem; background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(255,255,255,1); box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h3 style="color: #1e3a8a; font-size: 1.5rem;">Manage Notes</h3>
+                <span
+                    style="background: #eff6ff; color: #3b82f6; padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">PDFs
+                    Only</span>
+            </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;">
 
                 <!-- Upload Form -->
                 <div>
-                    <h4 style="margin-bottom: 1rem; color: #334155;">Upload New Note</h4>
+                    <h4 style="margin-bottom: 1.5rem; color: #334155; font-weight: 700;">Upload New Note</h4>
                     <form action="{{ url_for('upload_note') }}" method="POST" enctype="multipart/form-data">
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Chapter / Title</label>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #475569;">Chapter
+                            / Title</label>
                         <input type="text" name="title" required placeholder="e.g. Thermodynamics"
-                            style="background: white; border: 1px solid #cbd5e1;">
+                            style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 0.9rem; width: 100%; margin-bottom: 1rem;">
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
                             <div>
-                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Class</label>
-                                <select name="class_category" style="background: white; border: 1px solid #cbd5e1;">
+                                <label
+                                    style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #475569;">Class</label>
+                                <select name="class_category"
+                                    style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 0.9rem; width: 100%;">
                                     <option value="Class 9">Class 9</option>
                                     <option value="Class 10">Class 10</option>
                                     <option value="Class 11">Class 11</option>
@@ -31,8 +40,10 @@
                                 </select>
                             </div>
                             <div>
-                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Board</label>
-                                <select name="board" style="background: white; border: 1px solid #cbd5e1;">
+                                <label
+                                    style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #475569;">Board</label>
+                                <select name="board"
+                                    style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 0.9rem; width: 100%;">
                                     <option value="CBSE">CBSE</option>
                                     <option value="ICSE">ICSE</option>
                                     <option value="State">State</option>
@@ -42,41 +53,49 @@
                             </div>
                         </div>
 
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">PDF File</label>
-                        <input type="file" name="file" accept=".pdf" required
-                            style="background: white; border: 1px solid #cbd5e1; padding: 0.8rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #475569;">PDF
+                            File</label>
+                        <div style="position: relative;">
+                            <input type="file" name="file" accept=".pdf" required
+                                style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 0.8rem; width: 100%;">
+                        </div>
 
-                        <button type="submit" class="nav-btn" style="width: 100%; margin-top: 1rem;">Upload
+                        <button type="submit" class="nav-btn"
+                            style="width: 100%; margin-top: 1.5rem; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);">Upload
                             Note</button>
                     </form>
                 </div>
 
                 <!-- Existing Notes List -->
                 <div>
-                    <h4 style="margin-bottom: 1rem; color: #334155;">Existing Notes</h4>
+                    <h4 style="margin-bottom: 1.5rem; color: #334155; font-weight: 700;">Existing Notes</h4>
                     <div
-                        style="max-height: 400px; overflow-y: auto; background: white; border-radius: 12px; border: 1px solid #e2e8f0;">
+                        style="max-height: 400px; overflow-y: auto; background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);">
                         {% if notes %}
                         <ul style="list-style: none;">
                             {% for note in notes %}
                             <li
-                                style="padding: 1rem; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+                                style="padding: 1rem; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s;">
                                 <div>
                                     <div style="font-weight: 600; color: #1e3a8a;">{{ note['title'] }}</div>
-                                    <div style="font-size: 0.85rem; color: #64748b;">
-                                        {{ note['class_category'] }} • {{ note['board'] }}
+                                    <div style="font-size: 0.85rem; color: #64748b; margin-top: 0.2rem;">
+                                        {{ note['class_category'] }} • <span style="color: #94a3b8;">{{ note['board']
+                                            }}</span>
                                     </div>
                                 </div>
                                 <form action="{{ url_for('delete_note', note_id=note['id']) }}" method="POST"
                                     style="margin:0;">
                                     <button type="submit"
-                                        style="background: none; border: none; color: #ef4444; font-weight: 600; cursor: pointer; font-size: 0.9rem;">Delete</button>
+                                        style="background: #fee2e2; border: none; color: #ef4444; font-weight: 600; cursor: pointer; font-size: 0.8rem; padding: 0.3rem 0.8rem; border-radius: 6px; transition: all 0.2s;">Delete</button>
                                 </form>
                             </li>
                             {% endfor %}
                         </ul>
                         {% else %}
-                        <p style="padding: 2rem; text-align: center; color: #94a3b8;">No notes uploaded yet.</p>
+                        <div style="padding: 3rem; text-align: center;">
+                            <div style="font-size: 2rem; margin-bottom: 1rem;">📂</div>
+                            <p style="color: #94a3b8;">No notes uploaded yet.</p>
+                        </div>
                         {% endif %}
                     </div>
                 </div>
@@ -84,37 +103,187 @@
             </div>
         </div>
 
-        <div class="glass-panel" style="padding: 2rem;">
-            <h3>Recent Enquiries</h3>
+        <!-- Manage Students & Results Section -->
+        <div class="glass-panel"
+            style="padding: 2.5rem; margin-bottom: 3rem; background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(255,255,255,1); box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
+            <h3 style="margin-bottom: 2rem; color: #1e3a8a; font-size: 1.5rem;">Manage Students & Results</h3>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;">
+
+                <!-- 1. Register Student -->
+                <div>
+                    <h4 style="margin-bottom: 1.5rem; color: #334155; font-weight: 700;">Register New Student</h4>
+                    <form action="{{ url_for('add_student') }}" method="POST">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #475569;">Student
+                            Name</label>
+                        <input type="text" name="full_name" required placeholder="Full Name"
+                            style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 0.9rem; width: 100%; margin-bottom: 1rem;">
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                            <div>
+                                <label
+                                    style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #475569;">Roll
+                                    No</label>
+                                <input type="text" name="roll_no" required placeholder="AIT001"
+                                    style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 0.9rem; width: 100%;">
+                            </div>
+                            <div>
+                                <label
+                                    style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #475569;">Phone
+                                    (Parent)</label>
+                                <input type="text" name="parent_phone" required placeholder="9876543210"
+                                    style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 0.9rem; width: 100%;">
+                            </div>
+                        </div>
+
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #475569;">Batch /
+                            Class</label>
+                        <select name="class_batch"
+                            style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 0.9rem; width: 100%;">
+                            <option value="Class 11">Class 11</option>
+                            <option value="Class 12">Class 12</option>
+                            <option value="JEE">JEE</option>
+                        </select>
+
+                        <button type="submit" class="nav-btn"
+                            style="width: 100%; margin-top: 1.5rem; background-color: #059669; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);">Register
+                            Student</button>
+                    </form>
+                </div>
+
+                <!-- 2. Add Test Result -->
+                <div>
+                    <h4 style="margin-bottom: 1.5rem; color: #334155; font-weight: 700;">Upload Test Result</h4>
+                    <form action="{{ url_for('add_result') }}" method="POST">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #475569;">Select
+                            Student</label>
+                        <select name="student_id" required
+                            style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 0.9rem; width: 100%; margin-bottom: 1rem;">
+                            <option value="" disabled selected>Select a student...</option>
+                            {% for student in students %}
+                            <option value="{{ student['id'] }}">{{ student['full_name'] }} ({{ student['roll_no'] }})
+                            </option>
+                            {% endfor %}
+                        </select>
+
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #475569;">Test
+                            Name</label>
+                        <input type="text" name="test_name" required placeholder="e.g. Solutions Test 1"
+                            style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 0.9rem; width: 100%; margin-bottom: 1rem;">
+
+                        <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                            <div style="flex: 1;">
+                                <label
+                                    style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #475569;">Marks</label>
+                                <input type="number" step="0.5" name="marks_obtained" required placeholder="45"
+                                    style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 0.9rem; width: 100%;">
+                            </div>
+                            <div style="flex: 1;">
+                                <label
+                                    style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #475569;">Total</label>
+                                <input type="number" name="total_marks" required placeholder="50"
+                                    style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 0.9rem; width: 100%;">
+                            </div>
+                        </div>
+
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #475569;">Test
+                            Date</label>
+                        <input type="date" name="test_date" required
+                            style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 0.8rem; width: 100%;">
+
+                        <button type="submit" class="nav-btn"
+                            style="width: 100%; margin-top: 1.5rem; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);">Add
+                            Result</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Manage Reviews Section -->
+        <div class="glass-panel"
+            style="padding: 2.5rem; margin-bottom: 3rem; background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(255,255,255,1); box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h3 style="color: #1e3a8a; font-size: 1.5rem;">Pending Reviews</h3>
+                <span
+                    style="background: #fef3c7; color: #d97706; padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">Action
+                    Required</span>
+            </div>
+
+            {% if reviews %}
+            <ul style="list-style: none; display: grid; gap: 1.2rem;">
+                {% for review in reviews %}
+                <li
+                    style="background: #fff; padding: 1.5rem; border-radius: 16px; border: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: start; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+                    <div>
+                        <div style="font-weight: 700; color: #1e3a8a; margin-bottom: 0.4rem; font-size: 1.1rem;">
+                            {{ review['student_name'] }} <span
+                                style="font-weight: 500; color: #64748b; font-size: 0.9rem; margin-left: 0.5rem; padding: 0.2rem 0.6rem; background: #f1f5f9; border-radius: 10px;">{{
+                                review['class_info'] }}</span>
+                        </div>
+                        <div style="color: #f59e0b; margin-bottom: 0.8rem; font-size: 1.1rem;">
+                            {% for i in range(review['rating']) %}★{% endfor %}
+                        </div>
+                        <p style="color: #334155; font-style: italic; line-height: 1.6;">"{{ review['content'] }}"</p>
+                    </div>
+                    <div style="display: flex; gap: 0.8rem;">
+                        <!-- Approve -->
+                        <form action="{{ url_for('approve_review', id=review['id']) }}" method="POST" style="margin:0;">
+                            <button type="submit" class="nav-btn"
+                                style="padding: 0.7rem 1.5rem; font-size: 0.9rem; background-color: #059669; box-shadow: 0 4px 10px rgba(5,150,105,0.2);">Approve</button>
+                        </form>
+                        <!-- Delete -->
+                        <form action="{{ url_for('delete_review', id=review['id']) }}" method="POST" style="margin:0;">
+                            <button type="submit" class="nav-btn"
+                                style="padding: 0.7rem 1.5rem; font-size: 0.9rem; background-color: #ef4444; box-shadow: 0 4px 10px rgba(239,68,68,0.2);">Delete</button>
+                        </form>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <div style="text-align: center; padding: 3rem;">
+                <div style="font-size: 2rem; margin-bottom: 1rem;">✅</div>
+                <p style="color: #64748b;">No pending reviews. You're all caught up!</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="glass-panel"
+            style="padding: 2.5rem; background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(255,255,255,1);">
+            <h3 style="margin-bottom: 1.5rem; color: #1e3a8a;">Recent Enquiries</h3>
             <div style="overflow-x: auto;">
                 <table
                     style="width: 100%; border-collapse: collapse; margin-top: 1rem; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-                    <thead style="background: #eff6ff;">
+                    <thead style="background: #f1f5f9;">
                         <tr style="border-bottom: 2px solid #e2e8f0;">
-                            <th style="padding: 1rem; text-align: left; color: #1e3a8a;">Date</th>
-                            <th style="padding: 1rem; text-align: left; color: #1e3a8a;">Name</th>
-                            <th style="padding: 1rem; text-align: left; color: #1e3a8a;">Phone</th>
-                            <th style="padding: 1rem; text-align: left; color: #1e3a8a;">Class</th>
-                            <th style="padding: 1rem; text-align: left; color: #1e3a8a;">Message</th>
+                            <th style="padding: 1.2rem; text-align: left; color: #334155; font-weight: 600;">Date</th>
+                            <th style="padding: 1.2rem; text-align: left; color: #334155; font-weight: 600;">Name</th>
+                            <th style="padding: 1.2rem; text-align: left; color: #334155; font-weight: 600;">Phone</th>
+                            <th style="padding: 1.2rem; text-align: left; color: #334155; font-weight: 600;">Class</th>
+                            <th style="padding: 1.2rem; text-align: left; color: #334155; font-weight: 600;">Message
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         {% if enquiries %}
                         {% for enq in enquiries %}
-                        <tr style="border-bottom: 1px solid #e2e8f0;">
-                            <td style="padding: 1rem; color: #475569;">{{ enq['created_at'] }}</td>
-                            <td style="padding: 1rem; font-weight: 500; color: #0f172a;">{{ enq['student_name'] }}</td>
-                            <td style="padding: 1rem; color: #2563eb;"><a href="tel:{{ enq['phone'] }}"
-                                    style="text-decoration: none; color: inherit;">{{ enq['phone'] }}</a></td>
-                            <td style="padding: 1rem;"><span
-                                    style="background: #dbeafe; color: #1e40af; padding: 2px 8px; border-radius: 12px; font-size: 0.85rem;">{{
+                        <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.1s;">
+                            <td style="padding: 1.2rem; color: #64748b;">{{ enq['created_at'] }}</td>
+                            <td style="padding: 1.2rem; font-weight: 600; color: #0f172a;">{{ enq['student_name'] }}
+                            </td>
+                            <td style="padding: 1.2rem; color: #2563eb;"><a href="tel:{{ enq['phone'] }}"
+                                    style="text-decoration: none; color: inherit; font-weight: 500;">{{ enq['phone']
+                                    }}</a></td>
+                            <td style="padding: 1.2rem;"><span
+                                    style="background: #dbeafe; color: #1e40af; padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">{{
                                     enq['class_type'] }}</span></td>
-                            <td style="padding: 1rem; color: #475569;">{{ enq['message'] }}</td>
+                            <td style="padding: 1.2rem; color: #334155;">{{ enq['message'] }}</td>
                         </tr>
                         {% endfor %}
                         {% else %}
                         <tr>
-                            <td colspan="5" style="padding: 2rem; text-align: center; color: #64748b;">No enquiries yet.
+                            <td colspan="5" style="padding: 3rem; text-align: center; color: #94a3b8;">No enquiries yet.
                             </td>
                         </tr>
                         {% endif %}
@@ -123,7 +292,7 @@
             </div>
             <div style="margin-top: 2rem; text-align: right;">
                 <a href="{{ url_for('logout') }}"
-                    style="color: #ef4444; text-decoration: none; font-weight: 600;">Logout</a>
+                    style="color: #ef4444; text-decoration: none; font-weight: 600; padding: 0.5rem 1rem; border: 1px solid #fee2e2; border-radius: 8px; background: #fef2f2; transition: all 0.2s;">Logout</a>
             </div>
         </div>
 

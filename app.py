@@ -32,7 +32,7 @@ def close_connection(exception):
 @app.route('/')
 def home():
     conn = get_db()
-    testimonials = conn.execute('SELECT * FROM testimonials WHERE is_featured = 1 LIMIT 3').fetchall()
+    testimonials = conn.execute('SELECT * FROM testimonials WHERE is_featured = 1').fetchall()
     return render_template('home.html', testimonials=testimonials)
 
 @app.route('/about')
@@ -57,10 +57,10 @@ def results():
         identifier = request.form['identifier'] # Roll No or Phone
         conn = get_db()
         
-        # Try finding student by roll_no or phone
+        # Try finding student by roll_no, parent_phone, or name
         student = conn.execute(
-            'SELECT * FROM students WHERE roll_no = ? OR parent_phone = ?', 
-            (identifier, identifier)
+            'SELECT * FROM students WHERE roll_no = ? OR parent_phone = ? OR full_name LIKE ?', 
+            (identifier, identifier, '%' + identifier + '%')
         ).fetchone()
 
         if student:
@@ -111,6 +111,22 @@ def submit_enquiry():
     flash('Thank you! We will contact you soon.')
     return redirect(url_for('contact')) # Or home
 
+@app.route('/submit-review', methods=['POST'])
+def submit_review():
+    name = request.form['student_name']
+    class_info = request.form['class_info']
+    rating = request.form['rating']
+    content = request.form['content']
+
+    conn = get_db()
+    conn.execute(
+        'INSERT INTO testimonials (student_name, class_info, rating, content, is_featured) VALUES (?, ?, ?, ?, ?)',
+        (name, class_info, rating, content, 0) # 0 = Pending Approval
+    )
+    conn.commit()
+    flash('Thank you! Your review has been submitted for approval.')
+    return redirect(url_for('home'))
+
 from werkzeug.utils import secure_filename
 
 UPLOAD_FOLDER = 'static/uploads/notes'
@@ -153,9 +169,66 @@ def admin_dashboard():
         return redirect(url_for('login'))
         
     conn = get_db()
+    conn = get_db()
     enquiries = conn.execute('SELECT * FROM enquiries ORDER BY created_at DESC').fetchall()
     notes = conn.execute('SELECT * FROM notes ORDER BY uploaded_at DESC').fetchall()
-    return render_template('admin.html', enquiries=enquiries, notes=notes)
+    conn = get_db()
+    enquiries = conn.execute('SELECT * FROM enquiries ORDER BY created_at DESC').fetchall()
+    notes = conn.execute('SELECT * FROM notes ORDER BY uploaded_at DESC').fetchall()
+    students = conn.execute('SELECT * FROM students ORDER BY full_name ASC').fetchall()
+    pending_reviews = conn.execute('SELECT * FROM testimonials WHERE is_featured = 0').fetchall()
+    
+    return render_template('admin.html', 
+                           enquiries=enquiries, 
+                           notes=notes, 
+                           students=students, 
+                           reviews=pending_reviews)
+
+@app.route('/admin/approve_review/<int:id>', methods=['POST'])
+def approve_review(id):
+    if 'user' not in session: return redirect(url_for('login'))
+    conn = get_db()
+    conn.execute('UPDATE testimonials SET is_featured = 1 WHERE id = ?', (id,))
+    conn.commit()
+    flash('Review Approved!')
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/delete_review/<int:id>', methods=['POST'])
+def delete_review(id):
+    if 'user' not in session: return redirect(url_for('login'))
+    conn = get_db()
+    conn.execute('DELETE FROM testimonials WHERE id = ?', (id,))
+    conn.commit()
+    flash('Review Deleted.')
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/add_student', methods=['POST'])
+def add_student():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    
+    conn = get_db()
+    try:
+        conn.execute('INSERT INTO students (full_name, roll_no, parent_phone, class_batch) VALUES (?, ?, ?, ?)',
+                     (request.form['full_name'], request.form['roll_no'], request.form['parent_phone'], request.form['class_batch']))
+        conn.commit()
+        flash('Student added successfully!')
+    except sqlite3.IntegrityError:
+        flash('Error: Roll No already exists!')
+        
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/add_result', methods=['POST'])
+def add_result():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+        
+    conn = get_db()
+    conn.execute('INSERT INTO test_results (student_id, test_name, marks_obtained, total_marks, test_date) VALUES (?, ?, ?, ?, ?)',
+                 (request.form['student_id'], request.form['test_name'], request.form['marks_obtained'], request.form['total_marks'], request.form['test_date']))
+    conn.commit()
+    flash('Result added successfully!')
+    return redirect(url_for('admin_dashboard'))
 
 @app.route('/admin/upload_note', methods=['POST'])
 def upload_note():

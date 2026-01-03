@@ -10,7 +10,17 @@
         rel="stylesheet">
 </head>
 
-<body style="padding-top: 100px;"> <!-- Global padding to prevent navbar overlap -->
+<body style="opacity: 0; animation: fadeIn 0.5s ease-out forwards;">
+
+    <!-- Dynamic Ambient Background -->
+    <div class="fixed-background">
+        <div class="bg-orb orb-1"></div>
+        <div class="bg-orb orb-2"></div>
+        <div class="bg-orb orb-3"></div>
+    </div>
+
+    <!-- Mobile Slide-in Drawer -->
+    <!-- Global padding to prevent navbar overlap -->
 
     <nav class="navbar">
         <div class="nav-container">
@@ -31,6 +41,8 @@
                 </li>
                 <li><a href="{{ url_for('courses') }}" class="nav-item"
                         data-target="{{ url_for('courses') }}">Courses</a></li>
+                <li><a href="{{ url_for('results') }}" class="nav-item"
+                        data-target="{{ url_for('results') }}">Results</a></li>
                 <li><a href="{{ url_for('notes') }}" class="nav-item" data-target="{{ url_for('notes') }}">Notes</a>
                 </li>
                 <li><a href="{{ url_for('contact') }}" class="nav-item"

@@ -67,14 +67,100 @@ html {
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     color: var(--text-color);
-    background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 50%, #a5b4fc 100%);
-    background-attachment: fixed;
+    background: #f0f4f8;
+    /* Fallback */
+    /* background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 50%, #a5b4fc 100%);  <-- REMOVED static gradient */
     min-height: 100vh;
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
-    /* CRITICAL: Prevent horizontal scroll */
     line-height: 1.6;
+    position: relative;
+}
+
+/* --- Dynamic Background System --- */
+.fixed-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    /* Softest Blue Base */
+}
+
+.bg-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    /* Reduced blur slightly for distinctness */
+    opacity: 0.9;
+    /* Increased Visibility */
+    animation: orbFloat 15s infinite ease-in-out alternate;
+    /* Faster Base Speed */
+}
+
+.orb-1 {
+    width: 65vh;
+    /* Slightly Larger */
+    height: 65vh;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.5) 0%, rgba(37, 99, 235, 0) 70%);
+    /* Stronger Blue */
+    top: -15%;
+    left: -15%;
+    animation-duration: 18s;
+}
+
+.orb-2 {
+    width: 55vh;
+    height: 55vh;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.5) 0%, rgba(124, 58, 237, 0) 70%);
+    /* Stronger Purple */
+    bottom: -15%;
+    right: -15%;
+    animation-duration: 22s;
+    animation-delay: -2s;
+}
+
+.orb-3 {
+    width: 45vh;
+    height: 45vh;
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.45) 0%, rgba(6, 182, 212, 0) 70%);
+    /* Cyan/Sky Mix */
+    top: 45%;
+    left: 45%;
+    animation-duration: 16s;
+    animation-delay: -5s;
+}
+
+@keyframes orbFloat {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    33% {
+        transform: translate(40px, -60px) scale(1.15);
+    }
+
+    66% {
+        transform: translate(-30px, 30px) scale(0.9);
+    }
+
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 /* Ensure images never overflow */
@@ -153,20 +239,21 @@ img {
     border: var(--glass-border);
     box-shadow: var(--glass-shadow);
     border-radius: var(--radius-lg);
+    transition: transform 0.3s ease;
 }
 
 .glass-card {
-    background: rgba(255, 255, 255, 0.7);
-    /* Much higher opacity for text readability */
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    border: 1px solid rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
     border-radius: var(--radius-md);
     padding: 2rem;
     transition: var(--transition);
     position: relative;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    /* Very subtle base shadow */
     color: var(--text-color);
 }
 
@@ -177,9 +264,9 @@ img {
 }
 
 .glass-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-4px) scale(1.01);
     background: rgba(255, 255, 255, 0.85);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
 }
 
 /* Input Fields */
