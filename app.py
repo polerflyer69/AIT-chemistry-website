@@ -33,7 +33,7 @@ def close_connection(exception):
 def home():
     conn = get_db()
     testimonials = conn.execute('SELECT * FROM testimonials WHERE is_featured = 1').fetchall()
-    return render_template('home.html', testimonials=testimonials)
+    return render_template('home.html', testimonials=testimonials, page_class='home-page')
 
 @app.route('/about')
 def about():
@@ -94,6 +94,11 @@ def notes():
 @app.route('/images/<path:filename>')
 def serve_image(filename):
     return send_from_directory('images', filename)
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory('images', 'logo.png')
 
 
 @app.route('/submit-enquiry', methods=['POST'])

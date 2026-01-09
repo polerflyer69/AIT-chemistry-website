@@ -9,6 +9,9 @@
     --primary-hover: #1d4ed8;
 
     /* Improved Glass Vars for Readability */
+body.home-page main {
+    padding-top: 0;
+}
     --glass-bg: rgba(255, 255, 255, 0.65);
     /* More Opaque */
     --glass-border: 1px solid rgba(255, 255, 255, 0.6);
@@ -37,6 +40,10 @@ html {
 }
 
 /* Custom Scrollbar */
+    main {
+        padding-top: 110px;
+    }
+
 ::-webkit-scrollbar {
     width: 10px;
 }
@@ -190,12 +197,13 @@ img {
 
 .nav-logo-img {
     height: 42px;
-    width: auto;
+    width: 42px;
     display: block;
-    border-radius: 10px;
+    object-fit: contain;
+    border-radius: 50%;
     background: white;
-    padding: 4px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    padding: 3px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* ... existing code ... */
@@ -316,8 +324,8 @@ textarea:focus {
     justify-content: center;
     z-index: 1000;
     transition: top 0.3s ease;
-    height: 80px;
-    /* Fixed height to prevent jumps */
+    height: 68px;
+    /* Slightly slimmer bar */
 }
 
 .nav-container {
@@ -330,7 +338,7 @@ textarea:focus {
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: 100px;
-    padding: 0.4rem 0.6rem;
+    padding: 0.3rem 0.6rem;
     box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
     /* Soft floating shadow */
     transition: transform 0.4s ease;
@@ -714,13 +722,13 @@ textarea:focus {
 }
 
 .nav-btn {
-    padding: 0.7rem 1.5rem;
+    padding: 0.55rem 1.2rem;
     border-radius: 100px;
     background: #2563eb;
     color: white;
     text-decoration: none;
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     border: none;
     box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -755,8 +763,8 @@ textarea:focus {
 }
 
 .section {
-    padding: 4rem 0;
-    /* Reduced from 6rem for tighter rhythm */
+    padding: 3.2rem 0;
+    /* Slightly tighter vertical rhythm */
 }
 
 .section-title {
@@ -779,7 +787,7 @@ textarea:focus {
 /* Footer */
 footer {
     text-align: center;
-    padding: 4rem 2rem;
+    padding: 2rem 1.5rem;
     color: #475569;
     font-size: 0.9rem;
     background: rgba(255, 255, 255, 0.5);
