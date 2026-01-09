@@ -24,7 +24,10 @@
 
     <nav class="navbar">
         <div class="nav-container">
-            <a href="{{ url_for('home') }}" class="nav-logo">AIT Chemistry</a>
+            <a href="{{ url_for('home') }}" class="nav-logo">
+                <img src="{{ url_for('serve_image', filename='logo.png') }}" alt="AIT Chemistry logo" class="nav-logo-img">
+                <span>AIT Chemistry</span>
+            </a>
 
             <button class="nav-toggle" aria-label="Toggle Navigation">
                 <span></span>

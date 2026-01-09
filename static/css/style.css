@@ -174,17 +174,28 @@ img {
 
 /* Nav Logo - Confident & Academic */
 .nav-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
     font-family: 'Inter', sans-serif;
     font-weight: 800;
-    /* Heavier weight */
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     color: #1e3a8a;
     text-decoration: none;
     margin-right: 2rem;
     margin-left: 1rem;
     letter-spacing: -0.02em;
-    /* Clean tight spacing */
     white-space: nowrap;
+}
+
+.nav-logo-img {
+    height: 42px;
+    width: auto;
+    display: block;
+    border-radius: 10px;
+    background: white;
+    padding: 4px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
 /* ... existing code ... */
@@ -328,7 +339,10 @@ textarea:focus {
 
 /* Nav Logo */
 .nav-logo {
-    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-weight: 800;
     font-size: 1.2rem;
     color: #1e3a8a;
     text-decoration: none;
@@ -336,7 +350,6 @@ textarea:focus {
     margin-left: 1rem;
     letter-spacing: -0.5px;
     white-space: nowrap;
-    /* Prevent wrap */
 }
 
 /* Nav Links Container */

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, g, session
+from flask import Flask, render_template, request, redirect, url_for, flash, g, session, send_from_directory
 import sqlite3
 import os
 
@@ -89,6 +89,11 @@ def notes():
             notes_by_class[note['class_category']].append(note)
     
     return render_template('notes.html', notes=notes_by_class)
+
+
+@app.route('/images/<path:filename>')
+def serve_image(filename):
+    return send_from_directory('images', filename)
 
 
 @app.route('/submit-enquiry', methods=['POST'])
