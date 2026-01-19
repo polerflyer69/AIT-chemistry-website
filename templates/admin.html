@@ -3,7 +3,7 @@
 {% block content %}
 <section class="section" style="padding-top: 120px;">
     <div class="container">
-        <h2 style="color: white; margin-bottom: 2rem; text-shadow: 0 4px 12px rgba(0,0,0,0.1);">Admin Dashboard</h2>
+        <h2 style="color: #1e3a8a; margin-bottom: 2rem; font-weight: 800;">Admin Dashboard</h2>
 
         <!-- Manage Notes Section -->
         <div class="glass-panel"
@@ -37,6 +37,7 @@
                                     <option value="Class 11">Class 11</option>
                                     <option value="Class 12">Class 12</option>
                                     <option value="JEE">JEE</option>
+                                    <option value="NEET">NEET</option>
                                 </select>
                             </div>
                             <div>
@@ -140,9 +141,22 @@
                             Class</label>
                         <select name="class_batch"
                             style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 0.9rem; width: 100%;">
+                            <option value="Class 9">Class 9</option>
+                            <option value="Class 10">Class 10</option>
                             <option value="Class 11">Class 11</option>
                             <option value="Class 12">Class 12</option>
                             <option value="JEE">JEE</option>
+                        </select>
+
+                        <label
+                            style="display: block; margin-top: 1rem; margin-bottom: 0.5rem; font-weight: 600; color: #475569;">Board</label>
+                        <select name="board"
+                            style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 0.9rem; width: 100%;">
+                            <option value="CBSE">CBSE</option>
+                            <option value="ICSE">ICSE</option>
+                            <option value="State">State</option>
+                            <option value="International">International</option>
+                            <option value="Cambridge">Cambridge</option>
                         </select>
 
                         <button type="submit" class="nav-btn"
@@ -197,6 +211,54 @@
                     </form>
                 </div>
 
+            </div>
+
+            <!-- Student Directory -->
+            <div style="margin-top: 3rem; border-top: 1px solid #e2e8f0; padding-top: 2rem;">
+                <h4 style="margin-bottom: 1.5rem; color: #334155; font-weight: 700;">Registered Students Directory</h4>
+                <div
+                    style="max-height: 400px; overflow-y: auto; background: #fff; border-radius: 12px; border: 1px solid #e2e8f0;">
+                    {% if students %}
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead style="background: #f8fafc; position: sticky; top: 0;">
+                            <tr>
+                                <th style="padding: 1rem; text-align: left; color: #475569; font-size: 0.9rem;">Roll No
+                                </th>
+                                <th style="padding: 1rem; text-align: left; color: #475569; font-size: 0.9rem;">Name
+                                </th>
+                                <th style="padding: 1rem; text-align: left; color: #475569; font-size: 0.9rem;">Class
+                                </th>
+                                <th style="padding: 1rem; text-align: left; color: #475569; font-size: 0.9rem;">Board
+                                </th>
+                                <th style="padding: 1rem; text-align: right; color: #475569; font-size: 0.9rem;">Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in students %}
+                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <td style="padding: 1rem; color: #334155; font-family: monospace;">{{ student['roll_no']
+                                    }}</td>
+                                <td style="padding: 1rem; font-weight: 600; color: #1e3a8a;">{{ student['full_name'] }}
+                                </td>
+                                <td style="padding: 1rem; color: #64748b;">{{ student['class_batch'] }}</td>
+                                <td style="padding: 1rem; color: #64748b;">{{ student['board'] or '-' }}</td>
+                                <td style="padding: 1rem; text-align: right;">
+                                    <form action="{{ url_for('delete_student', id=student['id']) }}" method="POST"
+                                        onsubmit="return confirm('Delete {{ student.full_name }}? This will also delete their results.');"
+                                        style="margin: 0;">
+                                        <button type="submit"
+                                            style="background: none; border: none; color: #ef4444; cursor: pointer; font-weight: 600; font-size: 0.85rem; padding: 4px 8px; border-radius: 4px; background: #fee2e2;">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div style="padding: 2rem; text-align: center; color: #94a3b8;">No students registered yet.</div>
+                    {% endif %}
+                </div>
             </div>
         </div>
 
@@ -263,6 +325,8 @@
                             <th style="padding: 1.2rem; text-align: left; color: #334155; font-weight: 600;">Class</th>
                             <th style="padding: 1.2rem; text-align: left; color: #334155; font-weight: 600;">Message
                             </th>
+                            <th style="padding: 1.2rem; text-align: right; color: #334155; font-weight: 600;">Action
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -279,11 +343,20 @@
                                     style="background: #dbeafe; color: #1e40af; padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">{{
                                     enq['class_type'] }}</span></td>
                             <td style="padding: 1.2rem; color: #334155;">{{ enq['message'] }}</td>
+                            <td style="padding: 1.2rem; text-align: right;">
+                                <form action="{{ url_for('delete_enquiry', id=enq['id']) }}" method="POST"
+                                    onsubmit="return confirm('Are you sure you want to delete this enquiry?');">
+                                    <button type="submit"
+                                        style="background: #fee2e2; border: none; color: #ef4444; font-weight: 600; cursor: pointer; font-size: 0.8rem; padding: 0.4rem 1rem; border-radius: 6px; transition: all 0.2s;">
+                                        Clear
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                         {% endfor %}
                         {% else %}
                         <tr>
-                            <td colspan="5" style="padding: 3rem; text-align: center; color: #94a3b8;">No enquiries yet.
+                            <td colspan="6" style="padding: 3rem; text-align: center; color: #94a3b8;">No enquiries yet.
                             </td>
                         </tr>
                         {% endif %}
@@ -296,6 +369,21 @@
             </div>
         </div>
 
+        <!-- Admin Settings: Change Password -->
+        <div class="glass-panel"
+            style="padding: 2.5rem; margin-top: 3rem; margin-bottom: 3rem; background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(255,255,255,1);">
+            <h3 style="margin-bottom: 1.5rem; color: #1e3a8a;">Admin Settings</h3>
+            <form action="{{ url_for('change_password') }}" method="POST" style="max-width: 400px;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #475569;">Change Admin
+                    Password</label>
+                <div style="display: flex; gap: 1rem;">
+                    <input type="password" name="new_password" placeholder="New Password" required
+                        style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; padding: 0.9rem; flex: 1;">
+                    <button type="submit" class="nav-btn"
+                        style="background-color: #2563eb; padding: 0 2rem; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);">Update</button>
+                </div>
+            </form>
+        </div>
     </div>
 </section>
 {% endblock %}

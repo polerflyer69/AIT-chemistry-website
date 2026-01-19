@@ -29,7 +29,8 @@
     <nav class="navbar">
         <div class="nav-container">
             <a href="{{ url_for('home') }}" class="nav-logo">
-                <img src="{{ url_for('serve_image', filename='logo.png') }}" alt="AIT Chemistry logo" class="nav-logo-img">
+                <img src="{{ url_for('serve_image', filename='logo.png') }}" alt="AIT Chemistry logo"
+                    class="nav-logo-img">
                 <span>AIT Chemistry</span>
             </a>
 
@@ -54,6 +55,14 @@
                 </li>
                 <li><a href="{{ url_for('contact') }}" class="nav-item"
                         data-target="{{ url_for('contact') }}">Contact</a></li>
+
+                {% if session.get('user') or session.get('student_id') %}
+                <li><a href="{{ url_for('logout') }}" class="nav-item" data-target="{{ url_for('logout') }}"
+                        style="color: #ef4444;">Logout</a></li>
+                {% else %}
+                <li><a href="{{ url_for('login') }}" class="nav-item start-login"
+                        data-target="{{ url_for('login') }}">Login</a></li>
+                {% endif %}
 
                 <!-- Mobile CTA (Visible only inside menu on mobile) -->
                 <li class="mobile-only" style="margin-top: 1rem;">

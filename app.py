@@ -53,9 +53,21 @@ def results():
     student_info = None
     error = None
 
-    if request.method == 'POST':
+    conn = get_db()
+
+    # Check if student is logged in via session
+    if 'student_id' in session:
+        student_id = session['student_id']
+        student_info = conn.execute('SELECT * FROM students WHERE id = ?', (student_id,)).fetchone()
+        if student_info:
+            student_results = conn.execute(
+                'SELECT * FROM test_results WHERE student_id = ? ORDER BY test_date DESC',
+                (student_id,)
+            ).fetchall()
+    
+    # Validation for manual search (keeping it optionally or for fail-safe)
+    elif request.method == 'POST':
         identifier = request.form['identifier'] # Roll No or Phone
-        conn = get_db()
         
         # Try finding student by roll_no, parent_phone, or name
         student = conn.execute(
@@ -76,19 +88,48 @@ def results():
 
 @app.route('/notes')
 def notes():
+    if 'user' not in session and 'student_id' not in session:
+        return render_template('notes.html', access_denied=True)
+
     conn = get_db()
-    # Dictionary to categorize notes
-    notes_by_class = {
-        'Class 11': [],
-        'Class 12': [],
-        'JEE': []
-    }
-    all_notes = conn.execute('SELECT * FROM notes ORDER BY uploaded_at DESC').fetchall()
-    for note in all_notes:
-        if note['class_category'] in notes_by_class:
-            notes_by_class[note['class_category']].append(note)
-    
-    return render_template('notes.html', notes=notes_by_class)
+    notes_by_class = {}
+    visible_categories = []
+
+    # Admin Access: See All
+    if 'user' in session:
+        visible_categories = ['Class 9', 'Class 10', 'Class 11', 'Class 12', 'JEE', 'NEET']
+        for cat in visible_categories:
+            notes_by_class[cat] = []
+        all_notes = conn.execute('SELECT * FROM notes ORDER BY uploaded_at DESC').fetchall()
+        for note in all_notes:
+            if note['class_category'] in notes_by_class:
+                notes_by_class[note['class_category']].append(note)
+
+    # Student Access: See Only Their Class
+    elif 'student_id' in session:
+        student = conn.execute('SELECT class_batch FROM students WHERE id = ?', (session['student_id'],)).fetchone()
+        if student:
+            user_class = student['class_batch']
+            visible_categories = [user_class]
+            notes_by_class[user_class] = []
+            
+            # Fetch only meaningful notes for them (exact match or related like JEE/NEET for 11/12)
+            target_classes = [user_class]
+            if user_class in ['Class 11', 'Class 12']:
+                target_classes.extend(['JEE', 'NEET'])
+                visible_categories.extend(['JEE', 'NEET'])
+                notes_by_class['JEE'] = []
+                notes_by_class['NEET'] = []
+
+            placeholders = ','.join('?' * len(target_classes))
+            query = f"SELECT * FROM notes WHERE class_category IN ({placeholders}) ORDER BY uploaded_at DESC"
+            student_notes = conn.execute(query, target_classes).fetchall()
+            
+            for note in student_notes:
+                if note['class_category'] in notes_by_class:
+                    notes_by_class[note['class_category']].append(note)
+
+    return render_template('notes.html', notes=notes_by_class, visible_categories=visible_categories)
 
 
 @app.route('/images/<path:filename>')
@@ -155,21 +196,61 @@ def allowed_file(filename):
 def login():
     error = None
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        # Check if password was submitted (Step 2 of Admin Login)
+        if 'password' in request.form:
+            password = request.form['password']
+            conn = get_db()
+            admin = conn.execute('SELECT * FROM admin WHERE username = ?', ('admin',)).fetchone()
+            
+            # Default password 'admin' if DB has dummy hash, otherwise check real match
+            stored_pass = admin['password_hash']
+            # Allow 'admin' if it matches OR if it's the specific dummy seed
+            is_valid = (password == stored_pass) or (password == 'admin' and 'need_impl_later' in stored_pass)
+            
+            if is_valid:
+                session['user'] = 'admin'
+                flash('Welcome back, Sir!')
+                return redirect(url_for('admin_dashboard'))
+            else:
+                error = 'Invalid Admin Password'
+                return render_template('login.html', error=error, admin_mode=True)
+
+        identifier = request.form['identifier'].strip()
         
-        if username == 'admin' and password == 'admin123':
-            session['user'] = username
-            flash('Welcome back, Sir!')
-            return redirect(url_for('admin_dashboard'))
+        # Admin Login Trigger (Step 1)
+        if identifier == 'ashwin25':
+            return render_template('login.html', admin_mode=True)
+        
+        # Student Login
+        conn = get_db()
+        student = conn.execute('SELECT * FROM students WHERE roll_no = ?', (identifier,)).fetchone()
+        
+        if student:
+            session['student_id'] = student['id']
+            session['student_name'] = student['full_name']
+            flash(f"Welcome, {student['full_name']}!")
+            return redirect(url_for('results'))
         else:
-            error = 'Invalid Credentials'
+            error = 'Invalid Code or Roll Number'
             
     return render_template('login.html', error=error)
+
+@app.route('/admin/change_password', methods=['POST'])
+def change_password():
+    if 'user' not in session: return redirect(url_for('login'))
+    
+    new_pass = request.form['new_password']
+    conn = get_db()
+    conn.execute('UPDATE admin SET password_hash = ? WHERE username = ?', (new_pass, 'admin'))
+    conn.commit()
+    flash('Admin password updated successfully!')
+    return redirect(url_for('admin_dashboard'))
 
 @app.route('/logout')
 def logout():
     session.pop('user', None)
+    session.pop('student_id', None)
+    session.pop('student_name', None)
     flash('Logged out successfully.')
     return redirect(url_for('login'))
 
@@ -219,8 +300,8 @@ def add_student():
     
     conn = get_db()
     try:
-        conn.execute('INSERT INTO students (full_name, roll_no, parent_phone, class_batch) VALUES (?, ?, ?, ?)',
-                     (request.form['full_name'], request.form['roll_no'], request.form['parent_phone'], request.form['class_batch']))
+        conn.execute('INSERT INTO students (full_name, roll_no, parent_phone, class_batch, board) VALUES (?, ?, ?, ?, ?)',
+                     (request.form['full_name'], request.form['roll_no'], request.form['parent_phone'], request.form['class_batch'], request.form.get('board')))
         conn.commit()
         flash('Student added successfully!')
     except sqlite3.IntegrityError:
@@ -292,6 +373,32 @@ def delete_note(note_id):
         conn.execute('DELETE FROM notes WHERE id = ?', (note_id,))
         conn.commit()
         flash('Note deleted.')
+    
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/delete_enquiry/<int:id>', methods=['POST'])
+def delete_enquiry(id):
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    
+    conn = get_db()
+    conn.execute('DELETE FROM enquiries WHERE id = ?', (id,))
+    conn.commit()
+    flash('Enquiry deleted successfully!')
+    
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/delete_student/<int:id>', methods=['POST'])
+def delete_student(id):
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    
+    conn = get_db()
+    # Delete associated results first
+    conn.execute('DELETE FROM test_results WHERE student_id = ?', (id,))
+    conn.execute('DELETE FROM students WHERE id = ?', (id,))
+    conn.commit()
+    flash('Student account deleted.')
     
     return redirect(url_for('admin_dashboard'))
 

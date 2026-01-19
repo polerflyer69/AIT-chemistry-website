@@ -4,20 +4,53 @@
 <section class="section" style="padding-top: 120px;">
     <div class="container" style="max-width: 800px;">
 
-        <div class="glass-panel" style="padding: 2rem; text-align: center; margin-bottom: 3rem;">
-            <h2 style="color: #1e3a8a; margin-bottom: 1.5rem;">Check Your Result</h2>
+        {% if not student %}
+
+        <div class="login-card" style="max-width: 500px;"> <!-- Reuse login card style but slightly wider -->
+            <div style="margin-bottom: 1.5rem; display: flex; justify-content: center;">
+                <div
+                    style="width: 60px; height: 60px; background: #e0f2fe; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #0284c7; font-size: 1.5rem; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.1);">
+                    🔍
+                </div>
+            </div>
+
+            <h2 style="color: #1e3a8a; margin-bottom: 2rem;">Check Your Result</h2>
+
             <form method="POST" style="margin-top: 1rem;">
-                <input type="text" name="identifier" placeholder="Enter Student Name, Roll No, or Phone" required
-                    style="width: 100%; max-width: 400px; box-sizing: border-box;">
-                <br>
-                <button type="submit" class="nav-btn" style="margin-top: 1.5rem;">View Results</button>
+                <div style="text-align: left;">
+                    <label
+                        style="color: #475569; font-weight: 600; margin-bottom: 0.6rem; display: block; font-size: 0.9rem;">Search
+                        Criteria</label>
+                    <input type="text" name="identifier" placeholder="Enter Roll No or Phone (e.g. AIT001)" required
+                        style="width: 100%;">
+                </div>
+
+                <button type="submit" class="nav-btn"
+                    style="width: 100%; padding: 1rem; margin-top: 0.5rem; font-size: 1rem; box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);">View
+                    Results</button>
             </form>
+
             {% if error %}
-            <p
-                style="color: red; margin-top: 1rem; background: rgba(255,255,255,0.8); padding: 5px; border-radius: 5px;">
-                {{ error }}</p>
+            <div
+                style="background: #fef2f2; color: #b91c1c; padding: 0.8rem; border-radius: 12px; margin-top: 1.5rem; font-size: 0.9rem; border: 1px solid #fecaca; display: flex; align-items: center; gap: 0.5rem; justify-content: center;">
+                <span>⚠️</span> {{ error }}
+            </div>
             {% endif %}
+
+            <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.05);">
+                <p style="color: #64748b; font-size: 0.9rem;">
+                    Already have a student account? <br>
+                    <a href="{{ url_for('login') }}"
+                        style="color: #2563eb; font-weight: 600; text-decoration: none;">Login here</a> to view
+                    dashboard.
+                </p>
+            </div>
         </div>
+        {% else %}
+        <div style="text-align: right; margin-bottom: 1rem;">
+            <a href="{{ url_for('logout') }}" class="nav-btn" style="background-color: #ef4444;">Logout</a>
+        </div>
+        {% endif %}
 
         {% if student %}
         <div class="glass-card">

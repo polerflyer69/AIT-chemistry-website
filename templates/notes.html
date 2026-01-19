@@ -11,8 +11,24 @@
             </p>
         </div>
 
+        {% if access_denied %}
+        <div class="login-card" style="text-align: center; padding: 4rem 2rem; max-width: 500px; margin: 3rem auto;">
+            <div
+                style="width: 80px; height: 80px; background: #e0f2fe; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem auto; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.2);">
+                <span style="font-size: 2.5rem;">🔒</span>
+            </div>
+            <h3 style="color: #1e3a8a; margin-bottom: 1rem; font-size: 1.8rem;">Exclusive Content</h3>
+            <p style="color: #64748b; margin-bottom: 2rem; font-size: 1.1rem; line-height: 1.6;">
+                Kindly <b>login</b> to access premium chapter-wise notes and question banks tailored for your class.
+            </p>
+            <a href="{{ url_for('login') }}" class="nav-btn"
+                style="padding: 1rem 2.5rem; font-size: 1.1rem; box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.4);">Login
+                to View Notes</a>
+        </div>
+        {% else %}
+
         <div class="grid-3">
-            {% for category in ['Class 9', 'Class 10', 'Class 11', 'Class 12', 'JEE'] %}
+            {% for category in visible_categories %}
             <div class="glass-card" style="background: #ffffff; border: 1px solid #e2e8f0;">
                 <h3
                     style="color: #1e3a8a; border-bottom: 2px solid #eff6ff; padding-bottom: 0.5rem; margin-bottom: 1rem;">
@@ -34,13 +50,10 @@
                 {% else %}
                 <p style="color: #94a3b8; font-size: 0.9rem; font-style: italic;">No specific notes uploaded yet.</p>
                 {% endif %}
-
-                <div style="margin-top: 1rem; text-align: right;">
-                    <a href="#" style="font-size: 0.9rem; color: #3b82f6; text-decoration: none;">View All &rarr;</a>
-                </div>
             </div>
             {% endfor %}
         </div>
+        {% endif %}
 
     </div>
 </section>

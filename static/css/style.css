@@ -9,9 +9,10 @@
     --primary-hover: #1d4ed8;
 
     /* Improved Glass Vars for Readability */
-body.home-page main {
-    padding-top: 0;
-}
+    body.home-page main {
+        padding-top: 0;
+    }
+
     --glass-bg: rgba(255, 255, 255, 0.65);
     /* More Opaque */
     --glass-border: 1px solid rgba(255, 255, 255, 0.6);
@@ -40,9 +41,9 @@ html {
 }
 
 /* Custom Scrollbar */
-    main {
-        padding-top: 110px;
-    }
+main {
+    padding-top: 110px;
+}
 
 ::-webkit-scrollbar {
     width: 10px;
@@ -288,30 +289,79 @@ img {
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
 }
 
+/* Login Specific Card */
+.login-card {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+    border-radius: 24px;
+    padding: 3rem;
+    text-align: center;
+    max-width: 420px;
+    width: 100%;
+    margin: 0 auto;
+    transition: transform 0.3s ease;
+}
+
+.login-card:hover {
+    transform: translateY(-5px);
+}
+
+.login-card h2 {
+    color: #1e3a8a;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    font-weight: 800;
+}
+
+/* General Light Content Card */
+.content-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    border-radius: 24px;
+    padding: 3rem;
+    color: #334155;
+    transition: transform 0.3s ease;
+}
+
+.content-card h2 {
+    color: #1e3a8a;
+    font-weight: 800;
+}
+
+.content-card strong {
+    color: #0f172a;
+}
+
 /* Input Fields */
 input,
 textarea,
 select {
     width: 100%;
     padding: 1rem 1.2rem;
-    border-radius: var(--radius-sm);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    background: rgba(255, 255, 255, 0.8);
-    /* Higher contrast */
-    margin-bottom: 1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(203, 213, 225, 0.6);
+    background: rgba(255, 255, 255, 0.9);
+    margin-bottom: 1.2rem;
     font-size: 1rem;
-    transition: var(--transition);
+    transition: all 0.2s ease;
     font-family: inherit;
-    color: #0f172a;
-    /* Dark Text */
+    color: #1e293b;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 input:focus,
 textarea:focus {
     outline: none;
-    border-color: var(--primary-color);
+    border-color: #3b82f6;
     background: #ffffff;
-    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+    transform: translateY(-1px);
 }
 
 /* --- Apple-style Liquid Glass Navbar --- */

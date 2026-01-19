@@ -2,29 +2,64 @@
 {% block title %}Admin Login{% endblock %}
 {% block content %}
 <section class="section">
-    <div class="container" style="max-width: 500px;">
-        <div class="glass-panel" style="padding: 3rem; text-align: center;">
-            <h2 style="color: #1e3a8a; margin-bottom: 2rem;">Sir Panel Login</h2>
-
-            <form method="POST">
-                <div style="margin-bottom: 1.5rem; text-align: left;">
-                    <label
-                        style="color: #475569; font-weight: 600; margin-bottom: 0.5rem; display: block;">Username</label>
-                    <input type="text" name="username" required style="background: white; border: 1px solid #cbd5e1;">
+    <div class="container" style="display: flex; justify-content: center; align-items: center; min-height: 70vh;">
+        <div class="login-card">
+            <div style="margin-bottom: 1.5rem; display: flex; justify-content: center;">
+                <div
+                    style="width: 60px; height: 60px; background: #e0f2fe; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #0284c7; font-size: 1.5rem; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.1);">
+                    🔐
                 </div>
+            </div>
 
-                <div style="margin-bottom: 2rem; text-align: left;">
+            <h2 style="color: #1e3a8a; margin-bottom: 2rem;">
+                {% if admin_mode %}Enter Password{% else %}Welcome Back{% endif %}
+            </h2>
+
+            <form method="POST" style="margin-top: 1rem;">
+                {% if admin_mode %}
+                <!-- Admin Password Step -->
+                <div style="text-align: left; margin-bottom: 1.5rem;">
                     <label
-                        style="color: #475569; font-weight: 600; margin-bottom: 0.5rem; display: block;">Password</label>
-                    <input type="password" name="password" required
-                        style="background: white; border: 1px solid #cbd5e1;">
+                        style="color: #475569; font-weight: 600; margin-bottom: 0.6rem; display: block; font-size: 0.9rem;">Admin
+                        Password</label>
+                    <input type="password" name="password" placeholder="Enter Password" required autofocus
+                        style="width: 100%; border: 2px solid #e2e8f0; padding: 12px; border-radius: 10px; font-size: 1rem; transition: border-color 0.3s; outline: none; background: rgba(255,255,255,0.8);">
+                    <input type="hidden" name="identifier" value="ashwin25">
                 </div>
-
-                <button type="submit" class="nav-btn" style="width: 100%;">Login to Dashboard</button>
+                <button type="submit" class="nav-btn"
+                    style="width: 100%; padding: 1rem; font-size: 1rem; box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);">Login
+                    Securely</button>
+                <div style="margin-top: 1rem;">
+                    <a href="{{ url_for('login') }}"
+                        style="color: #64748b; font-size: 0.9rem; text-decoration: none;">&larr; Back</a>
+                </div>
+                {% else %}
+                <!-- Step 1: Roll No or Code -->
+                <div style="text-align: left;">
+                    <label
+                        style="color: #475569; font-weight: 600; margin-bottom: 0.6rem; display: block; font-size: 0.9rem;">Roll
+                        No or Code</label>
+                    <input type="text" name="identifier" placeholder="e.g. AIT001 or Code" required
+                        style="width: 100%;">
+                </div>
+                <button type="submit" class="nav-btn"
+                    style="width: 100%; padding: 1rem; margin-top: 0.5rem; font-size: 1rem; box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.4);">Continue</button>
+                {% endif %}
             </form>
 
             {% if error %}
-            <p style="color: #ef4444; margin-top: 1rem;">{{ error }}</p>
+            <div
+                style="background: #fef2f2; color: #b91c1c; padding: 0.8rem; border-radius: 12px; margin-top: 1.5rem; font-size: 0.9rem; border: 1px solid #fecaca; display: flex; align-items: center; gap: 0.5rem; justify-content: center;">
+                <span>⚠️</span> {{ error }}
+            </div>
+            {% endif %}
+
+            {% if not admin_mode %}
+            <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.05);">
+                <p style="color: #64748b; font-size: 0.9rem;">
+                    Enter your specific code to assume your role.
+                </p>
+            </div>
             {% endif %}
         </div>
     </div>

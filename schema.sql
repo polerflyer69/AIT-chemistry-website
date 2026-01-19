@@ -27,6 +27,7 @@ CREATE TABLE students (
     roll_no TEXT UNIQUE NOT NULL,
     parent_phone TEXT NOT NULL,
     class_batch TEXT NOT NULL, -- Class 11, Class 12, JEE
+    board TEXT, -- CBSE, GSEB, etc.
     joined_date DATE DEFAULT CURRENT_DATE
 );
 
